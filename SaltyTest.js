@@ -21,6 +21,8 @@ var callback = function(res) {
         console.log(state.p1name + ' VS ' + state.p2name);
         console.log('Total pot for ' + state.p1name + ': $' + state.p1total);
         console.log('Total pot for ' + state.p2name + ': $' + state.p2total);
+	dbconnect.addFighter(state.p1name);
+	dbconnect.addFighter(state.p2name);
         if (state.status == 'open') {
             console.log('Bets are currently open!');
         }
@@ -41,8 +43,6 @@ var callback = function(res) {
             var p1pot = parseInt(state.p1total.replace(/,/g, ""));
             var p2pot = parseInt(state.p2total.replace(/,/g, ""));
 	    var status = parseInt(state.status);
-	    dbconnect.addFighter(state.p1name);
-	    dbconnect.addFighter(state.p2name);
 	    dbconnect.addFight(state.p1name, state.p2name, p1pot, p2pot, status);
 	}
 	console.log('\n==================================================\n\n');

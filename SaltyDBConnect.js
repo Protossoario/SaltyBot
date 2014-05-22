@@ -6,6 +6,12 @@ var pool = mysql.createPool({
     database	: 'SaltyDB'
 });
 
+var addEscapeChars = function(str) {
+    str.replace(/\'/g, "\\\'");
+    str.replace(/\"/g, "\\\"");
+    return str;
+}
+
 /* Envia un query a la base de datos con dos parametros */
 var querySaltyDB = function(query, response) {
     pool.getConnection(function(err, connection) {
@@ -20,6 +26,7 @@ var querySaltyDB = function(query, response) {
 
 /* Valida si un personaje esta en la base de datos, y si no, lo agrega */
 var addFighter = function(name) {
+    name = addEscapeChars(name);
     var query = 'SELECT * FROM Fighter WHERE name=\'' + name + '\'';
     var response = function(err, rows) {
         if (err) {
@@ -47,6 +54,8 @@ var addFighter = function(name) {
 
 /* Inserta los datos de una nueva pelea a la base de datos */
 var addFight = function(p1name, p2name, p1pot, p2pot, winner) {
+    p1name = addEscapeChars(p1name);
+    p2name = addEscapeChars(p2name);
     var query = 'INSERT INTO Fight VALUES ' + 
 		'(NULL, ' +
 		'\'' + p1name + '\'' + ', ' +
